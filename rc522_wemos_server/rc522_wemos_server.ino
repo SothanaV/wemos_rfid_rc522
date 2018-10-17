@@ -13,7 +13,7 @@ const char* password = "ilovestudy";            //Set Password
 const char* Server   = "192.168.1.24";          //set Server Domain or Server
 
 ESP8266WiFiMulti WiFiMulti;
-
+String data = "";
 void setup() 
 {
   Serial.begin(115200);   
@@ -21,8 +21,8 @@ void setup()
   mfrc522.PCD_Init(); 
    for(uint8_t t = 6; t > 0; t--) 
    {
-      USE_SERIAL.printf("[SETUP] WAIT %d...\n", t);
-      USE_SERIAL.flush();
+      Serial.printf("[SETUP] WAIT %d...\n", t);
+      Serial.flush();
       delay(1000);
     }
     WiFiMulti.addAP(ssid, password);    //Set SSID and Password (SSID, Password)
@@ -46,15 +46,30 @@ void loop()
   Serial.println();
   if((WiFiMulti.run() == WL_CONNECTED)) 
     {
-      
+        HTTPClient http;
+        String str = "http://" +String(Server)+":5000"+"/id/"+data;
+        Serial.println(str);
+        http.begin(str);
+        int httpCode = http.GET();
+        Serial.printf("[HTTP] GET... code: %d\n", httpCode);
+        if(httpCode > 0) 
+        {
+            if(httpCode == HTTP_CODE_OK) 
+              {
+                String payload = http.getString();
+                Serial.printf("%s : %s \n","Payload","payload");
+              } 
+        }
     }
 }
 
 void dump_byte_array(byte *buffer, byte bufferSize) 
 {
+  data = "";
   for (byte i = 0; i < bufferSize; i++) 
   {
     Serial.print(buffer[i] < 0x10 ? " 0" : " ");
     Serial.print(buffer[i], HEX);
+    data = data + String(buffer[i]);
   }
 }
