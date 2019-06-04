@@ -15,8 +15,8 @@
 <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
 <script>
       var socket =io();
-      socket.on('s2c', function(msg)
+      socket.on('s2c', function(id_card)
       {
-        document.getElementById('c1').innerHTML = msg;
+        document.getElementById('c1').innerHTML = id_card;
       });
 </script>

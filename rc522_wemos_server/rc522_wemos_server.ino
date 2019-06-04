@@ -10,7 +10,7 @@ MFRC522 mfrc522(SS_PIN, RST_PIN);
 
 const char* ssid     = "ois";                   //Set ssid
 const char* password = "ilovestudy";            //Set Password
-const char* Server   = "192.168.1.24";          //set Server Domain or Server
+const char* Server   = "192.168.1.6";          //set Server Domain or Server
 
 ESP8266WiFiMulti WiFiMulti;
 String data = "";
